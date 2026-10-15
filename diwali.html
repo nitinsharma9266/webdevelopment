@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Diwali Animation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d1b2a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .text-container {
+      font-size: 3em;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .letter {
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .letter.show {
+      opacity: 1;
+      transform: scale(1.2) rotate(5deg);
+      color: #ffcc00;
+      text-shadow: 0 0 10px #ff6600, 0 0 20px #ff0000;
+    }
+
+    .final-message {
+      font-size: 4em;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 1s ease-in-out;
+      color: #ffd700;
+      text-shadow: 0 0 20px #ff6600, 0 0 40px #ff0000;
+    }
+
+    .final-message.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #start-btn {
+      padding: 12px 24px;
+      background: #ff6600;
+      border: none;
+      font-size: 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+
+    #start-btn:hover {
+      background: #ff4500;
+    }
+  </style>
+</head>
+<body>
+  <div id="text-container" class="text-container"></div>
+  <div id="final-message" class="final-message">🎆 Happy Diwali 🎆</div>
+  <button id="start-btn">🎇 Tap to Start 🎇</button>
+
+  <!-- Single Patakha Sound for Each Letter -->
+  <audio id="pop-sound" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_27fb90c8df.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Background Firecracker Sound Loop -->
+  <audio id="bg-firecracker" preload="auto" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/07/13/audio_4b2aef9a46.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const text = "HAPPY";
+    const container = document.getElementById("text-container");
+    const popSound = document.getElementById("pop-sound");
+    const finalMessage = document.getElementById("final-message");
+    const startBtn = document.getElementById("start-btn");
+    const bgFirecracker = document.getElementById("bg-firecracker");
+
+    startBtn.addEventListener("click", () => {
+      startBtn.style.display = "none"; // Hide button after click
+
+      // Start background firecracker music
+      try {
+        bgFirecracker.volume = 0.5; // moderate volume
+        bgFirecracker.play();
+      } catch (e) {
+        console.warn("Background music play failed:", e);
+      }
+
+      // Show each letter with pop sound
+      [...text].forEach((char, index) => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.classList.add("letter");
+        container.appendChild(span);
+
+        setTimeout(() => {
+          span.classList.add("show");
+          try {
+            popSound.currentTime = 0;
+            popSound.play();
+          } catch (e) {
+            console.warn("Pop sound play failed:", e);
+          }
+        }, index * 500); // 500ms delay between letters
+      });
+
+      // Show final message
+      setTimeout(() => {
+        finalMessage.classList.add("show");
+      }, text.length * 500 + 1000);
+    });
+  </script>
+</body>
+</html>
