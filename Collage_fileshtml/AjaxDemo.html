@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX Demo</title>
+</head>
+<body>
+    <h2>Getting Data Using AJAX</h2>
+
+    <p>Click the button to fetch data from the server.</p>
+
+    <button type="button" onclick="displayDoc()">
+        Click Me
+    </button>
+
+    <div id="sample"></div>
+
+    <script>
+        function displayDoc() {
+            let xhr = new XMLHttpRequest();
+
+            document.getElementById("sample").textContent =
+                "Loading data...";
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            let data = JSON.parse(xhr.responseText);
+                            let outputHTML = "<ol>";
+
+                            data.forEach(function (person) {
+                                outputHTML +=
+                                    "<li>" + person.name + ", " +
+                                    person.age + " years old, from " +
+                                    person.city + "</li>";
+                            });
+
+                            outputHTML += "</ol>";
+
+                            document.getElementById("sample").innerHTML =
+                                outputHTML;
+                        } catch (error) {
+                            document.getElementById("sample").textContent =
+                                "Invalid JSON data.";
+                        }
+                    } else {
+                        document.getElementById("sample").textContent =
+                            "Request failed. HTTP status: " + xhr.status;
+                    }
+                }
+            };
+
+            xhr.open("GET", "data.json", true);
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
