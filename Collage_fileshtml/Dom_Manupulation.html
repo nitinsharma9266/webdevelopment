@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Manipulation</title>
+</head>
+<body>
+    <h2 id="heading">DOM Example</h2>
+
+    <ul id="list">
+        <li id="first">HTML</li>
+        <li id="second">CSS</li>
+    </ul>
+
+    <button onclick="addItem()">Add</button>
+    <button onclick="insertItem()">Insert</button>
+    <button onclick="replaceItem()">Replace</button>
+    <button onclick="removeItem()">Remove</button>
+
+    <script>
+        function addItem() {
+            let li = document.createElement("li");
+            li.textContent = "JavaScript";
+
+            document.getElementById("list").appendChild(li);
+        }
+
+        function insertItem() {
+            let li = document.createElement("li");
+            li.textContent = "Inserted Item";
+
+            let list = document.getElementById("list");
+            let second = document.getElementById("second");
+
+            list.insertBefore(li, second);
+        }
+
+        function replaceItem() {
+            let li = document.createElement("li");
+            li.textContent = "React";
+
+            let list = document.getElementById("list");
+            let second = document.getElementById("second");
+
+            list.replaceChild(li, second);
+            li.id = "second";
+        }
+
+        function removeItem() {
+            let list = document.getElementById("list");
+            let first = document.getElementById("first");
+
+            if (first && first.parentNode === list) {
+                list.removeChild(first);
+            }
+        }
+    </script>
+</body>
+</html>
